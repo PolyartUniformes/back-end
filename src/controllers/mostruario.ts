@@ -25,4 +25,44 @@ Mostruario.post("/mostruario/child/", async (req, res) => {
   return res.status(200).json(response);
 });
 
+Mostruario.post("/mostruario/update/", async (req, res) => {
+  const { element } = req.body;
+
+  const response = await mostruario.update(element);
+
+  return res.status(200).json(response);
+});
+
+Mostruario.post("/mostruario/rent/", async (req, res) => {
+  const { element } = req.body;
+
+  const response = await mostruario.rent(element);
+
+  return res.status(200).json(response);
+});
+
+Mostruario.post("/mostruario/unrent/", async (req, res) => {
+  const { element } = req.body;
+
+  const response = await mostruario.unrent(element);
+
+  return res.status(200).json(response);
+});
+
+Mostruario.post("/mostruario/delete/", async (req, res) => {
+  const { uuid } = req.body;
+
+  const response = await mostruario.deleteItem(uuid);
+
+  return res.status(200).json(response);
+});
+
+Mostruario.post("/mostruario/getCliente/", async (req, res) => {
+  const { uuid } = req.body;
+
+  const response = await mostruario.getCliente(uuid);
+
+  return res.status(200).json(response);
+});
+
 export default Mostruario;
