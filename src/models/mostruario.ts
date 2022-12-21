@@ -120,6 +120,7 @@ class Mostruario {
         aluguel: element.aluguel,
         entrega: element.entrega,
         pecas: element.items,
+        detalhes: element.detalhes,
       });
 
       if (error) return error.message;
