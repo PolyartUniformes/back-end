@@ -11,4 +11,12 @@ Estoque.post("/estoque/update/", async (req, res) => {
   return res.status(200).json(response);
 });
 
+Estoque.post("/estoque/create/", async (req, res) => {
+  const { element } = req.body;
+
+  const response = await estoque.create(element);
+
+  return res.status(200).json(response);
+});
+
 export default Estoque;

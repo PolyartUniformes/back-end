@@ -5,7 +5,7 @@ class Mapa {
     const { data, error } = await supabase
       .from("Estoque")
       .select()
-      .order("id", { ascending: true });
+      .order("tecido", { ascending: true });
 
     if (error) {
       console.log(error.message);

@@ -34,6 +34,26 @@ class Estoque {
       return error.message;
     }
   }
+
+  async create(element: any) {
+    try {
+      const { error } = await supabase.from("Estoque").insert({
+        tecido: element.tecido,
+        cor: element.cor,
+        quantidade: element.quantidade,
+        composicao: element.composicao,
+        fornecedor: element.fornecedor,
+        metragem: element.metragem,
+        largura: element.largura,
+      });
+
+      if (error) return error.message;
+
+      return "Tecido cadastrado com sucesso!";
+    } catch (error: any) {
+      return error.message;
+    }
+  }
 }
 
 const estoque = new Estoque();
