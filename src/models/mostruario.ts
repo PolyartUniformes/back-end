@@ -52,6 +52,21 @@ class Mostruario {
     }
   }
 
+  async getDataChild() {
+    try {
+      const { data, error } = await supabase
+        .from("mostruario_pecas")
+        .select()
+        .order("alugado", { ascending: true });
+
+      if (error) return error.message;
+
+      return data;
+    } catch (error: any) {
+      return error.message;
+    }
+  }
+
   async getChilds(uuid: string) {
     try {
       const { data, error } = await supabase
@@ -62,6 +77,22 @@ class Mostruario {
       if (error) return error.message;
 
       return data;
+    } catch (error: any) {
+      return error.message;
+    }
+  }
+
+  async getParents() {
+    try {
+      const { data, error } = await supabase.from("mostruario_lotes").select();
+
+      if (error) return error.message;
+
+      const db = await supabase.from("mostruario_cliente").select();
+
+      if (db.error) return db.error.message;
+
+      return { lotes: data, clientes: db.data };
     } catch (error: any) {
       return error.message;
     }

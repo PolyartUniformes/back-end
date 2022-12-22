@@ -163,6 +163,17 @@ class Corte {
 
     return data;
   }
+
+  async getItems() {
+    const { data, error } = await supabase
+      .from("cut_orders")
+      .select()
+      .order("main_code", { ascending: true });
+
+    if (error) return error.message;
+
+    return data;
+  }
 }
 
 const corte = new Corte();

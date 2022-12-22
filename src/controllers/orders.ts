@@ -72,4 +72,10 @@ Order.get("/api/webGet/", async (req, res) => {
   return res.status(200).json(response);
 });
 
+Order.get("/ordem-de-corte/getitems/", async (req, res) => {
+  const response = await corte.getItems();
+
+  return res.status(200).json(response);
+});
+
 export default Order;
