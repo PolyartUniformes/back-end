@@ -26,7 +26,13 @@ class User {
       }
 
       const uuid = data[0].uuid;
-      const token = jwt.sign({ uuid }, privateKey, { expiresIn: 3600 });
+
+      const payload = { uuid: uuid };
+
+      const token = jwt.sign(payload, privateKey, {
+        noTimestamp: true,
+        expiresIn: "1h",
+      });
 
       return { success: true, token };
     } else {
@@ -36,9 +42,9 @@ class User {
 
   validateToken(token: string) {
     try {
-      const decode = jwt.verify(token, privateKey);
+      const decode: any = jwt.verify(token, privateKey);
       if (decode) {
-        return { success: true, message: token };
+        return { success: true, message: token, uuid: decode.uuid };
       }
       return { success: false, message: "User not found!" };
     } catch (error: any) {

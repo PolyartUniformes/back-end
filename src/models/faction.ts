@@ -28,7 +28,9 @@ class Faction {
 
       const parentData = parent.data[0];
 
-      const parentQuantity = parentData.quantity;
+      const parentQuantity = parentData.sizes
+        .split(",")
+        .reduce((x: any, y: any) => x + parseInt(y), 0);
 
       const children = await supabase
         .from("faction_orders")

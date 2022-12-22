@@ -2,6 +2,8 @@ import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import { supabase } from "../services/supabase";
 
+const privateKey = process.env.PRIVATE_KEY as string;
+
 class Admin {
   async createUser(
     name: string,
@@ -274,6 +276,21 @@ class Admin {
       return "Dados transferidos com sucesso!";
     } catch (error: any) {
       console.log(error.message);
+      return error.message;
+    }
+  }
+
+  async me(uuid: string) {
+    try {
+      const { data, error } = await supabase
+        .from("users")
+        .select()
+        .eq("uuid", uuid);
+
+      if (error) return error.message;
+
+      return data[0];
+    } catch (error: any) {
       return error.message;
     }
   }

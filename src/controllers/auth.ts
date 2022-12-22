@@ -23,7 +23,7 @@ auth.get("/auth/me", async (req, res) => {
     let result = user.validateToken(token);
 
     if (result?.success) {
-      return res.json(result.message);
+      return res.json({ message: result.message, uuid: result.uuid });
     }
 
     return res.status(500).json(result?.message);

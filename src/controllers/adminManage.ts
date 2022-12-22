@@ -98,4 +98,12 @@ AdminManage.get("/admin/transfer", async (req, res) => {
   return res.status(200).json(response);
 });
 
+AdminManage.post("/admin/me/", async (req, res) => {
+  const { uuid } = req.body;
+
+  const response = await admin.me(uuid);
+
+  return res.status(200).json(response);
+});
+
 export default AdminManage;
