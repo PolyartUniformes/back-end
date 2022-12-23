@@ -118,6 +118,40 @@ class Mostruario {
 
   async rent(element: any) {
     try {
+      /**
+       * Registro do cliente e seu lote/peças alugadas
+       */
+      const itensAlugados = element.items.split(",");
+
+      itensAlugados.forEach(async (id: any) => {
+        const db = await supabase
+          .from("mostruario_pecas")
+          .select()
+          .eq("id", id);
+
+        if (db.error) return console.log(db.error.message);
+
+        const dadosItens = db.data?.[0];
+
+        const endereco = `${element.cidade}, ${element.rua}, ${element.numero}, ${element.cep}`;
+
+        const save = await supabase.from("historico_mostruario").insert({
+          cliente: element.cliente,
+          documento: element.documento,
+          lote: element.lote,
+          item: dadosItens.item,
+          id_item: dadosItens.id,
+          endereco,
+          telefone: element.telefone,
+          dia_alugado: element.aluguel,
+        });
+
+        if (save.error) return console.log(save.error.message);
+      });
+      /**
+       * Fim do registro do cliente
+       */
+
       const qnt = element.items.split(",");
 
       const sum = element.alugado + qnt.length;
@@ -164,6 +198,19 @@ class Mostruario {
 
   async unrent(element: any) {
     const items = element.items.split(",");
+
+    items.forEach(async (id: any) => {
+      const date = new Date();
+
+      const currentDate = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+
+      const save = await supabase
+        .from("historico_mostruario")
+        .update({ dia_entregue: currentDate })
+        .eq("id_item", id);
+
+      if (save.error) return console.log(save.error.message);
+    });
 
     const sum = element.alugado - items.length;
 
@@ -235,6 +282,53 @@ class Mostruario {
     if (error) return error.message;
 
     return data;
+  }
+
+  async saveClient(element: any) {
+    try {
+      const { error } = await supabase.from("historico_mostruario").insert({
+        dia_alugado: element.dia_alugado,
+        dia_entregue: null,
+        cliente: element.cliente,
+        documento: element.documento,
+        endereco: element.endereco,
+        lote: element.lote,
+        item: element.item,
+      });
+
+      if (error) return console.log(error.message);
+    } catch (error: any) {
+      return error.message;
+    }
+  }
+
+  async deleteClient(id: number) {
+    try {
+      const { error } = await supabase
+        .from("historico_mostruario")
+        .delete()
+        .eq("id", id);
+
+      if (error) return error.message;
+
+      return "Cliente deletado com sucesso!";
+    } catch (error: any) {
+      return error.message;
+    }
+  }
+
+  async getClients() {
+    try {
+      const { data, error } = await supabase
+        .from("historico_mostruario")
+        .select();
+
+      if (error) return error.message;
+
+      return data;
+    } catch (error: any) {
+      return error.message;
+    }
   }
 }
 

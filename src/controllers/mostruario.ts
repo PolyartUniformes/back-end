@@ -77,4 +77,25 @@ Mostruario.post("/mostruario/getCliente/", async (req, res) => {
   return res.status(200).json(response);
 });
 
+Mostruario.post("/mostruario/saveclient/", async (req, res) => {
+  const { element } = req.body;
+
+  await mostruario.saveClient(element);
+
+  return res.status(200);
+});
+
+Mostruario.post("/mostruario/deleteclient/", async (req, res) => {
+  const { id } = req.body;
+
+  const response = await mostruario.deleteClient(id);
+
+  return res.status(200).json(response);
+});
+
+Mostruario.get("/mostruario/getclients/", async (req, res) => {
+  const dados = await mostruario.getClients();
+  return res.status(200).json(dados);
+});
+
 export default Mostruario;
